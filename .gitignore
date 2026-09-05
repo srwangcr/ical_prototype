@@ -36,3 +36,11 @@ nohup.out
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Base de datos SQLite
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+sync_engine.db*
