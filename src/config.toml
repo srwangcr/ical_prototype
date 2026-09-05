@@ -1,0 +1,7 @@
+sync_interval_minutes = 1
+database_path = "sync_engine.db"
+
+[[channels]]
+name = "Google Calendar Test"
+ics_url = "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics"
+enabled = true

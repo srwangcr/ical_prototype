@@ -1,0 +1,17 @@
+sync_interval_minutes = 1
+database_path = "sync_engine.db"
+
+[[channels]]
+name = "Airbnb"
+ics_url = "https://www.airbnb.com/calendar/ical/your_listing_id.ics?key=your_key"
+enabled = true
+
+[[channels]]
+name = "Vrbo"
+ics_url = "https://www.vrbo.com/icalendar/your_listing_id.ics"
+enabled = true
+
+[[channels]]
+name = "Booking"
+ics_url = "https://admin.booking.com/icalendar/your_booking_id.ics"
+enabled = false

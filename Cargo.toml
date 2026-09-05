@@ -1,0 +1,20 @@
+[package]
+name = "sync_engine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json", "stream"] }
+ical = "0.8"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.8"
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "sqlite", "chrono"] }
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+dotenv = "0.15"
+toml = "0.8"
