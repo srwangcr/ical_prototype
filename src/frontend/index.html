@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔄 Sincronizador de Calendarios</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>" />
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📅 Sincronizador de Calendarios</h1>
+                <p class="subtitle">Evita dobles reservas en Airbnb, Vrbo y Booking</p>
+            </div>
+        </header>
+
+        <!-- Estado del sistema -->
+        <section class="status-card">
+            <div class="status-header">
+                <h2>🔵 Estado del Sistema</h2>
+                <span id="status-badge" class="status-badge status-running">🟢 Activo</span>
+            </div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <label>Última sincronización</label>
+                    <span id="last-sync">--:--:--</span>
+                </div>
+                <div class="status-item">
+                    <label>Próxima sincronización</label>
+                    <span id="next-sync">--:--:--</span>
+                </div>
+                <div class="status-item">
+                    <label>Total de reservas</label>
+                    <span id="total-reservations">0</span>
+                </div>
+                <div class="status-item">
+                    <label>Conflictos detectados</label>
+                    <span id="total-conflicts">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuración -->
+        <section class="config-card">
+            <h2>⚙️ Configuración</h2>
+            <p class="help-text">
+                Sigue estos pasos para conectar tus calendarios. 
+                <button id="show-tutorial" class="btn-tutorial">📖 Ver tutorial paso a paso</button>
+            </p>
+
+            <!-- Pasos del tutorial -->
+            <div id="tutorial" class="tutorial hidden">
+                <div class="tutorial-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Encuentra tu enlace iCal en Airbnb</h3>
+                        <p>Ingresa a tu cuenta de anfitrión → Anuncios → Disponibilidad → Sincronización de calendarios → <strong>Exportar calendario</strong></p>
+                        <p class="step-tip">💡 Copia el enlace completo que comienza con <code>https://www.airbnb.com/...</code></p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Encuentra tu enlace iCal en Vrbo</h3>
+                        <p>Ingresa a tu cuenta → Calendario → Conexiones de calendario → <strong>Exportar calendario</strong></p>
+                        <p class="step-tip">💡 El enlace comienza con <code>https://www.vrbo.com/icalendar/...</code></p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Pega tus enlaces aquí abajo</h3>
+                        <p>Copia los enlaces que obtuviste en los pasos anteriores y pégalos en los campos correspondientes.</p>
+                        <p class="step-tip">💡 No te preocupes si parece un texto largo y complicado — ¡es normal!</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Activa la sincronización</h3>
+                        <p>Haz clic en el botón <strong>Guardar y Activar</strong>. El sistema empezará a sincronizar automáticamente.</p>
+                        <p class="step-tip">✅ Verás un mensaje verde confirmando que todo funciona correctamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="config-form">
+                <!-- Canal 1: Airbnb -->
+                <div class="channel-config">
+                    <div class="channel-header">
+                        <span class="channel-icon">🏠</span>
+                        <h3>Airbnb</h3>
+                        <label class="toggle">
+                            <input type="checkbox" class="channel-enabled" data-channel="airbnb" checked />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="airbnb-url">URL del calendario iCal</label>
+                        <input type="url" id="airbnb-url" 
+                               placeholder="https://www.airbnb.com/calendar/ical/..."
+                               class="input-large" />
+                        <span class="helper">📋 Pega aquí el enlace que copiaste de Airbnb</span>
+                    </div>
+                </div>
+
+                <!-- Canal 2: Vrbo -->
+                <div class="channel-config">
+                    <div class="channel-header">
+                        <span class="channel-icon">🏖️</span>
+                        <h3>Vrbo</h3>
+                        <label class="toggle">
+                            <input type="checkbox" class="channel-enabled" data-channel="vrbo" checked />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="vrbo-url">URL del calendario iCal</label>
+                        <input type="url" id="vrbo-url" 
+                               placeholder="https://www.vrbo.com/icalendar/..."
+                               class="input-large" />
+                        <span class="helper">📋 Pega aquí el enlace que copiaste de Vrbo</span>
+                    </div>
+                </div>
+
+                <!-- Canal 3: Booking -->
+                <div class="channel-config">
+                    <div class="channel-header">
+                        <span class="channel-icon">🏨</span>
+                        <h3>Booking.com</h3>
+                        <label class="toggle">
+                            <input type="checkbox" class="channel-enabled" data-channel="booking" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-url">URL del calendario iCal</label>
+                        <input type="url" id="booking-url" 
+                               placeholder="https://admin.booking.com/icalendar/..."
+                               class="input-large" />
+                        <span class="helper">📋 Pega aquí el enlace que copiaste de Booking.com</span>
+                    </div>
+                </div>
+
+                <!-- Configuración avanzada -->
+                <details class="advanced-settings">
+                    <summary>⚙️ Configuración avanzada</summary>
+                    <div class="form-group">
+                        <label for="sync-interval">Intervalo de sincronización (minutos)</label>
+                        <input type="number" id="sync-interval" value="15" min="5" max="1440" />
+                        <span class="helper">⏰ Recomendado: 15 minutos. Airbnb sugiere mínimo 15 minutos.</span>
+                    </div>
+                </details>
+
+                <button type="submit" class="btn-primary">💾 Guardar y Activar</button>
+            </form>
+        </section>
+
+        <!-- Panel de monitoreo -->
+        <section class="monitor-card">
+            <h2>📊 Monitoreo en Tiempo Real</h2>
+            <div class="monitor-controls">
+                <button id="refresh-logs" class="btn-secondary">🔄 Actualizar</button>
+                <button id="clear-logs" class="btn-secondary">🗑️ Limpiar</button>
+            </div>
+            <div id="log-container" class="log-container">
+                <div class="log-entry system">🔄 Sistema iniciado. Esperando sincronización...</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>🔒 Tus datos son locales y privados. No se comparten con terceros.</p>
+            <p class="version">v1.0.0</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>

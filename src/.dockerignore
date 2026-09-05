@@ -1,0 +1,13 @@
+# .dockerignore
+target/
+.git/
+*.db
+*.db-*
+*.log
+nohup.out
+data/
+node_modules/
+.env
+*.swp
+*.swo
+.DS_Store
